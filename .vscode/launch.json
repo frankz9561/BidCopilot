@@ -1,0 +1,55 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug App Main Process",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/app",
+      "runtimeExecutable": "${workspaceFolder}/app/node_modules/.bin/electron-vite",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/app/node_modules/.bin/electron-vite.cmd"
+      },
+      "runtimeArgs": ["--sourcemap"],
+      "env": {
+        "REMOTE_DEBUGGING_PORT": "9222"
+      }
+    },
+    {
+      "name": "Debug App Renderer Process",
+      "port": 9222,
+      "request": "attach",
+      "type": "chrome",
+      "webRoot": "${workspaceFolder}/app/src/renderer",
+      "timeout": 60000,
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "name": "Debug Backend",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/main.py",
+      "cwd": "${workspaceFolder}/backend",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug App",
+      "configurations": ["Debug App Main Process", "Debug App Renderer Process"],
+      "presentation": {
+        "order": 1
+      }
+    },
+    {
+      "name": "Debug App + Backend",
+      "configurations": ["Debug App Main Process", "Debug App Renderer Process", "Debug Backend"],
+      "presentation": {
+        "order": 2
+      }
+    }
+  ]
+}
